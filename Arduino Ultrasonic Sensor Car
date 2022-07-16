@@ -1,0 +1,117 @@
+int buttonState = 0;
+int TRIG = 7;//we define the variables conected to the pins
+int ECO =6;//we define the variables conected to the pins
+int LED = 3;//we define the variables conected to the pins
+int DURACION;//We define the variable DURATION
+int DISTANCIA;//wE DEFINE THE VARIABLE DISTANCIA
+
+//motor variables
+int m1a = 2; //motor a
+int m1b = 3; //motor a
+int m2a = 4; //motor b
+int m2b = 5; //motor b
+
+void setup()
+{
+  Serial.begin(9600);
+pinMode(TRIG, OUTPUT);
+  pinMode(ECO,INPUT);
+  pinMode(LED, OUTPUT);
+  
+  //Push Button
+  pinMode(2, INPUT);
+  
+  //LED setup
+  pinMode(8, OUTPUT);
+  pinMode(9, OUTPUT);
+  pinMode(13, OUTPUT);
+  pinMode(12, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(10, OUTPUT);
+}
+
+void loop()
+{
+  // read the state of the pushbutton value
+  buttonState = digitalRead(2);
+  Serial.println(buttonState);
+ digitalWrite(TRIG, HIGH);//we send a high pulse to the trigger
+  delay(1);
+  digitalWrite(TRIG, LOW);//we send a low pulse to the trigger
+ DURACION = pulseIn (ECO,HIGH);//the pulseIn funtion returns a time in microseconds that we assign to the duration variable
+  DISTANCIA = DURACION/58.2;//time elapsed from transmission to recep
+  Serial.println(DISTANCIA);
+  delay (200);
+  if (DISTANCIA <= 150 && DISTANCIA >=0) {
+    digitalWrite (LED, LOW);
+    delay(DISTANCIA*10);
+   go();
+  }
+   
+else { reverse(); }
+  }
+  
+ 
+//Motor Left fwd and Right rev
+void left(){
+
+    
+  analogWrite(m1a,255);
+  analogWrite(m1b,0);
+  analogWrite(m2a,0);
+  analogWrite(m2b,255);
+  
+  digitalWrite(13, HIGH);
+  digitalWrite(8, HIGH);
+}
+
+//Motor Left rev and Right fwd
+void right(){
+  
+  
+  analogWrite(m1a,0);
+  analogWrite(m1b,255);
+  analogWrite(m2a,255);
+  analogWrite(m2b,0);
+  
+  digitalWrite(11, HIGH);
+  digitalWrite(9, HIGH);
+}
+
+//stop both motors
+void stop(){
+  
+
+  
+  analogWrite(m1a,0);
+  analogWrite(m1b,0);
+  analogWrite(m2a,0);
+  analogWrite(m2b,0);
+  digitalWrite(12, HIGH);
+  digitalWrite(10, HIGH);
+}
+
+//Motos both go fwd
+void go(){
+  
+
+  
+  analogWrite(m1a,255);
+  analogWrite(m1b,0);
+  analogWrite(m2a,255);
+  analogWrite(m2b,0);
+  digitalWrite(13, HIGH);
+  digitalWrite(11, HIGH);
+}
+
+//Motors both go backwards
+void reverse(){ 
+  analogWrite(m1a,0);
+  analogWrite(m1b,255);
+  analogWrite(m2a,0);
+  analogWrite(m2b,255);
+
+
+
+
+}
